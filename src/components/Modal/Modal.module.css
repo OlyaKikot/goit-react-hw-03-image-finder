@@ -21,11 +21,27 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: aqua;
+  background-color: white;
   border: none;
   position: absolute;
   top: 10px;
   right: 10px;
   font-size: 20px;
   font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 500ms linear;
+}
+.closeModal:hover {
+  background-color: black;
+}
+
+.CloseLogo {
+  fill: rgb(21, 14, 27);
+  transition: 500ms linear;
+}
+
+.closeModal:hover .CloseLogo {
+  fill: rgb(238, 236, 240);
 }
