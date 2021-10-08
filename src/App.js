@@ -6,6 +6,9 @@ import ImageGallery from "./components/ImageGallery";
 import Button from "./components/Button/Button";
 import Loader from "./components/Loader";
 import Modal from "./components/Modal/Modal";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const modalRoot = document.querySelector("#modal-root");
 
@@ -38,9 +41,15 @@ export default class App extends React.Component {
       `https://pixabay.com/api/?q=${this.state.imageNames}&page=${this.state.page}&key=22945587-13dcce98a35cac559e6949163&image_type=photo&orientation=horizontal&per_page=12`
     )
       .then((response) => response.json())
-      .then((resp) =>
-        this.setState((old) => ({ images: [...old.images, ...resp.hits] }))
-      )
+      .then((resp) => {
+        if (resp.hits.length === 0) {
+          toast("Уточните критерии поиска!");
+        }
+        return this.setState((old) => ({
+          images: [...old.images, ...resp.hits],
+        }));
+      })
+      .catch((error) => console.log(error))
       .finally(() => this.setState({ loading: false }));
   };
 
@@ -90,6 +99,7 @@ export default class App extends React.Component {
         {this.state.images.length > 0 && (
           <Button onLoadMore={this.onLoadMore} />
         )}
+        <ToastContainer autoClose={3000} />
         {this.state.bigImg && (
           <Modal
             src={this.state.bigImg}
