@@ -19,11 +19,12 @@ export default class App extends React.Component {
     imageNames: "",
     page: 1,
     bigImg: null,
+    shouldScroll: false,
   };
   onSubmit = (imageNames) => {
     this.setState({ imageNames });
     if (this.state.imageNames !== imageNames) {
-      this.setState({ images: [] });
+      this.setState({ images: [], shouldScroll: false, page: 1 });
     }
   };
 
@@ -62,6 +63,12 @@ export default class App extends React.Component {
     ) {
       this.getImages();
     }
+    if (this.state.shouldScroll === true || this.state.page !== 1) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }
 
   handleKeyDown = (e) => {
@@ -84,7 +91,13 @@ export default class App extends React.Component {
   }
 
   onLoadMore = () => {
-    this.setState((prevState) => ({ page: prevState.page + 1 }));
+    this.setState((prevState) => ({
+      page: prevState.page + 1,
+    }));
+
+    if (this.state.page >= 1) {
+      this.setState({ shouldScroll: true });
+    }
   };
 
   render() {
