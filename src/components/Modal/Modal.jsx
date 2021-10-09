@@ -1,5 +1,6 @@
 import s from "./Modal.module.css";
 import { ReactComponent as CloseLogo } from "../../icon-close.svg";
+import PropTypes from "prop-types";
 
 export default function Modal({ src, onCloseModal, handleOverlay }) {
   return (
@@ -17,3 +18,9 @@ export default function Modal({ src, onCloseModal, handleOverlay }) {
     </div>
   );
 }
+
+Modal.propTypes = {
+  src: PropTypes.string.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
+  handleOverlay: PropTypes.func.isRequired,
+};

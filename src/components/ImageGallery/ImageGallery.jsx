@@ -1,5 +1,6 @@
 import ImageGalleryItem from "../ImageGalleryItem";
 import s from "./ImageGallery.module.css";
+import PropTypes from "prop-types";
 export default function ImageGallery({ images, onImgClick }) {
   return (
     <>
@@ -17,3 +18,8 @@ export default function ImageGallery({ images, onImgClick }) {
     </>
   );
 }
+
+ImageGallery.propTypes = {
+  images: PropTypes.array,
+  onImgClick: PropTypes.func.isRequired,
+};
