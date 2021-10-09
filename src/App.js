@@ -33,7 +33,7 @@ export default class App extends React.Component {
   };
 
   onImgClick = (largeImageURL) => {
-    this.setState({ bigImg: largeImageURL });
+    this.setState({ bigImg: largeImageURL, shouldScroll: false, page: 1 });
   };
 
   getImages = () => {
