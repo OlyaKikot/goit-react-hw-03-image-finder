@@ -1,5 +1,5 @@
 import "./App.css";
-import { createPortal } from "react-dom";
+
 import React from "react";
 import SearchBar from "./components/SearchBar";
 import ImageGallery from "./components/ImageGallery";
@@ -10,8 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
-const modalRoot = document.querySelector("#modal-root");
-
 export default class App extends React.Component {
   state = {
     images: [],
@@ -19,12 +17,11 @@ export default class App extends React.Component {
     imageNames: "",
     page: 1,
     bigImg: null,
-    shouldScroll: false,
   };
   onSubmit = (imageNames) => {
     this.setState({ imageNames });
     if (this.state.imageNames !== imageNames) {
-      this.setState({ images: [], shouldScroll: false, page: 1 });
+      this.setState({ images: [], page: 1 });
     }
   };
 
@@ -33,7 +30,7 @@ export default class App extends React.Component {
   };
 
   onImgClick = (largeImageURL) => {
-    this.setState({ bigImg: largeImageURL, shouldScroll: false, page: 1 });
+    this.setState({ bigImg: largeImageURL });
   };
 
   getImages = () => {
@@ -55,15 +52,13 @@ export default class App extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const prevImageNames = prevState.imageNames;
-    const nextImageNames = this.state.imageNames;
     if (
-      prevImageNames !== nextImageNames ||
+      prevState.imageNames !== this.state.imageNames ||
       prevState.page !== this.state.page
     ) {
       this.getImages();
     }
-    if (this.state.shouldScroll === true || this.state.page !== 1) {
+    if (this.state.page > 1) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
@@ -94,20 +89,13 @@ export default class App extends React.Component {
     this.setState((prevState) => ({
       page: prevState.page + 1,
     }));
-
-    if (this.state.page >= 1) {
-      this.setState({ shouldScroll: true });
-    }
   };
 
   render() {
-    return createPortal(
+    return (
       <>
         <SearchBar onSubmit={this.onSubmit} />
-        <ImageGallery
-          images={this.state.images}
-          onImgClick={this.onImgClick}
-        ></ImageGallery>
+        <ImageGallery images={this.state.images} onImgClick={this.onImgClick} />
         {this.state.loading && <Loader />}
         {this.state.images.length > 0 && (
           <Button onLoadMore={this.onLoadMore} />
@@ -120,8 +108,7 @@ export default class App extends React.Component {
             handleOverlay={this.handleOverlay}
           />
         )}
-      </>,
-      modalRoot
+      </>
     );
   }
 }
